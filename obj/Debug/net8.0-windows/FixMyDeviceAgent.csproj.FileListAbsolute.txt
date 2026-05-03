@@ -1,0 +1,7 @@
+D:\Project\Codex Fix My Device Project\obj\Debug\net8.0-windows\FixMyDeviceAgent.csproj.AssemblyReference.cache
+D:\Project\Codex Fix My Device Project\obj\Debug\net8.0-windows\rpswa.dswa.cache.json
+D:\Project\Codex Fix My Device Project\obj\Debug\net8.0-windows\FixMyDeviceAgent.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\Codex Fix My Device Project\obj\Debug\net8.0-windows\FixMyDeviceAgent.AssemblyInfoInputs.cache
+D:\Project\Codex Fix My Device Project\obj\Debug\net8.0-windows\FixMyDeviceAgent.AssemblyInfo.cs
+D:\Project\Codex Fix My Device Project\obj\Debug\net8.0-windows\FixMyDeviceAgent.csproj.CoreCompileInputs.cache
+D:\Project\Codex Fix My Device Project\obj\Debug\net8.0-windows\FixMyDeviceAgent.MvcApplicationPartsAssemblyInfo.cache
