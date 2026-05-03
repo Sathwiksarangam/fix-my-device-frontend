@@ -20,7 +20,7 @@ public sealed class WindowsDeviceInfoService
             GraphicsCard = GetWmiValue("Win32_VideoController", "Name"),
             TotalStorage = FormatBytes(totalStorageBytes),
             AvailableStorage = FormatBytes(availableStorageBytes),
-            DeviceId = GetComputerUuid(),
+            DeviceId = GetWindowsSettingsDeviceId(),
             ProductId = GetRegistryValue(
                 @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
                 "ProductId"),
@@ -41,20 +41,24 @@ public sealed class WindowsDeviceInfoService
     private static ulong GetInstalledRamBytes()
     {
         var memory = GetWmiValue("Win32_ComputerSystem", "TotalPhysicalMemory");
-
         return ulong.TryParse(memory, out var bytes) ? bytes : 0;
     }
 
-    private static string GetComputerUuid()
+    private static string GetWindowsSettingsDeviceId()
     {
-        var uuid = GetWmiValue("Win32_ComputerSystemProduct", "UUID");
+        var deviceId = Registry.GetValue(
+            @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\SQMClient",
+            "MachineId",
+            null
+        )?.ToString();
 
-        if (!string.IsNullOrWhiteSpace(uuid))
+        if (!string.IsNullOrWhiteSpace(deviceId))
         {
-            return uuid;
+            return deviceId.ToUpperInvariant();
         }
 
-        return GetWmiValue("Win32_ComputerSystemProduct", "IdentifyingNumber");
+        var fallbackUuid = GetWmiValue("Win32_ComputerSystemProduct", "UUID");
+        return string.IsNullOrWhiteSpace(fallbackUuid) ? "Unknown" : fallbackUuid;
     }
 
     private static string GetWindowsVersion()
@@ -64,8 +68,15 @@ public sealed class WindowsDeviceInfoService
         var productName = GetRegistryValue(windowsKey, "ProductName");
         var displayVersion = GetRegistryValue(windowsKey, "DisplayVersion");
         var currentBuild = GetRegistryValue(windowsKey, "CurrentBuild");
+        var ubr = GetRegistryValue(windowsKey, "UBR");
 
-        return $"{productName} {displayVersion} (Build {currentBuild})".Trim();
+        var build = currentBuild;
+        if (ubr != "Unknown")
+        {
+            build = $"{currentBuild}.{ubr}";
+        }
+
+        return $"{productName} {displayVersion} (Build {build})".Trim();
     }
 
     private static string GetRegistryValue(string subKey, string valueName)
