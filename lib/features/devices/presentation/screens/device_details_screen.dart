@@ -45,7 +45,7 @@ class DeviceDetailsScreen extends StatelessWidget {
           final device = devices.firstWhere(
             (d) =>
                 '${d['id'] ?? d['deviceId'] ?? ''}' ==
-                '${deviceId ?? ''}',
+                (deviceId ?? ''),
             orElse: () => devices.isNotEmpty ? devices.first : null,
           );
 
