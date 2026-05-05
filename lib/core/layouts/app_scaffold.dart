@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/router/app_router.dart';
+import '../../features/auth/data/auth_service.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
@@ -203,74 +204,151 @@ class _NavigationContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(22),
-            ),
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  Icons.medical_information_rounded,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Padding(
+          padding: const EdgeInsets.all(18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        'Fix My Device',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w800,
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(22),
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.medical_information_rounded,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        'Support console',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.black54,
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Fix My Device',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    'Support console',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Colors.black54,
+                                        ),
+                                  ),
+                                ],
+                              ),
                             ),
+                          ],
+                        ),
                       ),
+                      const SizedBox(height: 18),
+                      for (final _NavigationItem item in items)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 6),
+                          child: _NavigationTile(
+                            label: item.label,
+                            icon: item.icon,
+                            isSelected: item.route == currentRoute,
+                            onTap: () => context.go(item.route),
+                          ),
+                        ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 18),
-          for (final _NavigationItem item in items)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 6),
-              child: _NavigationTile(
-                label: item.label,
-                icon: item.icon,
-                isSelected: item.route == currentRoute,
-                onTap: () => context.go(item.route),
               ),
-            ),
-          const Spacer(),
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            leading: const CircleAvatar(
-              child: Icon(Icons.person_outline_rounded),
-            ),
-            title: const Text('Support Admin'),
-            subtitle: const Text('Mock session'),
-            trailing: IconButton(
-              onPressed: () => context.go(AppRoutes.login),
-              icon: const Icon(Icons.logout_rounded),
-              tooltip: 'Logout',
-            ),
+              const SizedBox(height: 12),
+              ValueListenableBuilder<int>(
+                valueListenable: AuthService.authState,
+                builder: (BuildContext context, int _, Widget? child) {
+                  return Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF7F9FC),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.black.withOpacity(0.05)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const CircleAvatar(
+                              child: Icon(Icons.person_outline_rounded),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text(
+                                    AuthService.getEmail() ?? 'Not logged in',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    AuthService.isLoggedIn
+                                        ? 'Signed in'
+                                        : 'Guest session',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Colors.black54,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton.icon(
+                            onPressed: () {
+                              AuthService.logout();
+                              context.go(AppRoutes.login);
+                            },
+                            icon: const Icon(Icons.logout_rounded),
+                            label: const Text('Logout'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
