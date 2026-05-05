@@ -98,6 +98,12 @@ class _LoginScreenState extends State<LoginScreen> {
         'Account created successfully. Logging you in...',
         isError: false,
       );
+
+      await Future<void>.delayed(const Duration(milliseconds: 350));
+
+      if (!mounted) {
+        return;
+      }
     }
 
     final bool loggedIn = await AuthService().login(email, password);

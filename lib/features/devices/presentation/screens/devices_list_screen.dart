@@ -72,10 +72,7 @@ class _DevicesListScreenState extends State<DevicesListScreen> {
 
   Future<void> _downloadAgent() async {
     final Uri uri = Uri.parse(ApiDeviceService.agentDownloadUrl);
-    final bool launched = await launchUrl(
-      uri,
-      mode: LaunchMode.externalApplication,
-    );
+    final bool launched = await launchUrl(uri);
 
     if (launched || !mounted) {
       return;
@@ -111,7 +108,8 @@ class _DevicesListScreenState extends State<DevicesListScreen> {
             );
           }
 
-          final _DevicesPageData pageData = snapshot.data!;
+          final _DevicesPageData pageData = snapshot.data ??
+              const _DevicesPageData(devices: <dynamic>[], agentSetupCode: '');
           final List<dynamic> devices = pageData.devices;
 
           if (devices.isEmpty) {
