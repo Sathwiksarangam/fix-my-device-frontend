@@ -5,7 +5,8 @@ import '../../../auth/data/auth_service.dart';
 
 class ApiDeviceService {
   static const String baseUrl = 'https://fix-my-device-backend.onrender.com';
-  static const String agentDownloadUrl = '/downloads/FixMyDeviceAgent.exe';
+  static const String agentDownloadUrl =
+      'https://fix-my-device-backend.onrender.com/downloads/FixMyDeviceAgent.exe';
 
   String _requireToken() {
     final token = AuthService.getToken();

@@ -31,6 +31,59 @@
 
   <title>fix_my_device</title>
   <link rel="manifest" href="manifest.json">
+  <style>
+    html,
+    body {
+      background: #f3f6fa;
+    }
+
+    input,
+    textarea,
+    flt-glass-pane input,
+    flt-glass-pane textarea,
+    .flt-text-editing-host input,
+    .flt-text-editing-host textarea {
+      color: #111827 !important;
+      caret-color: #2166ac !important;
+      background-color: #ffffff !important;
+      -webkit-text-fill-color: #111827 !important;
+    }
+
+    input::selection,
+    textarea::selection,
+    flt-glass-pane input::selection,
+    flt-glass-pane textarea::selection,
+    .flt-text-editing-host input::selection,
+    .flt-text-editing-host textarea::selection {
+      background: rgba(33, 102, 172, 0.2) !important;
+      color: #111827 !important;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover,
+    textarea:-webkit-autofill:focus,
+    flt-glass-pane input:-webkit-autofill,
+    flt-glass-pane input:-webkit-autofill:hover,
+    flt-glass-pane input:-webkit-autofill:focus,
+    flt-glass-pane textarea:-webkit-autofill,
+    flt-glass-pane textarea:-webkit-autofill:hover,
+    flt-glass-pane textarea:-webkit-autofill:focus,
+    .flt-text-editing-host input:-webkit-autofill,
+    .flt-text-editing-host input:-webkit-autofill:hover,
+    .flt-text-editing-host input:-webkit-autofill:focus,
+    .flt-text-editing-host textarea:-webkit-autofill,
+    .flt-text-editing-host textarea:-webkit-autofill:hover,
+    .flt-text-editing-host textarea:-webkit-autofill:focus {
+      -webkit-text-fill-color: #111827 !important;
+      caret-color: #2166ac !important;
+      -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+      box-shadow: 0 0 0 1000px #ffffff inset !important;
+      transition: background-color 99999s ease-out 0s;
+    }
+  </style>
 </head>
 <body>
   <!--
