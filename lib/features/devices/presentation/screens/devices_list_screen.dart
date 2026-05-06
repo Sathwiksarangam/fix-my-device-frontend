@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app/router/app_router.dart';
 import '../../../../core/layouts/app_scaffold.dart';
@@ -71,19 +71,18 @@ class _DevicesListScreenState extends State<DevicesListScreen> {
   }
 
   Future<void> _downloadAgent() async {
-    final Uri uri = Uri.parse(ApiDeviceService.agentDownloadUrl);
-    final bool launched = await launchUrl(uri);
+  await Clipboard.setData(
+    const ClipboardData(text: ApiDeviceService.agentDownloadUrl),
+  );
 
-    if (launched || !mounted) {
-      return;
-    }
+  if (!mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Could not open ${ApiDeviceService.agentDownloadUrl}'),
-      ),
-    );
-  }
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text('Agent download link copied. Paste it in browser.'),
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {

@@ -332,8 +332,8 @@ class _NavigationContent extends StatelessWidget {
                         SizedBox(
                           width: double.infinity,
                           child: OutlinedButton.icon(
-                            onPressed: () {
-                              AuthService.logout();
+                            onPressed: () async {
+                              await AuthService.logout();
                               context.go(AppRoutes.login);
                             },
                             icon: const Icon(Icons.logout_rounded),

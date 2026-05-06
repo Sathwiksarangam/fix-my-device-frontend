@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/data/auth_service.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/devices/presentation/screens/device_details_screen.dart';
@@ -23,7 +24,24 @@ class AppRoutes {
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.login,
+    initialLocation: AuthService.isLoggedIn
+        ? AppRoutes.devices
+        : AppRoutes.login,
+    refreshListenable: AuthService.authState,
+    redirect: (BuildContext context, GoRouterState state) {
+      final bool loggedIn = AuthService.isLoggedIn;
+      final bool isLoggingIn = state.matchedLocation == AppRoutes.login;
+
+      if (!loggedIn && !isLoggingIn) {
+        return AppRoutes.login;
+      }
+
+      if (loggedIn && isLoggingIn) {
+        return AppRoutes.devices;
+      }
+
+      return null;
+    },
     routes: <RouteBase>[
       GoRoute(
         path: AppRoutes.login,
