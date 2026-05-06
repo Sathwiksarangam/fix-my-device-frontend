@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FixMyDeviceAgent")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c5b940b85b8ae31060a4b89078536ef5198946c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d2790b8f4b5a82be5574e88979bc7cbbf39a793d")]
 [assembly: System.Reflection.AssemblyProductAttribute("FixMyDeviceAgent")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FixMyDeviceAgent")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
